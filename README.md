@@ -5,7 +5,7 @@ List of auth route:
 | Router 	                | HTTP | Description       | Body | Headers |
 |-----------------------    |:----:|:-------------------:|:---------:|--------|
 |/api/auth          |POST  | auth signin      |email,password
-|/api/auth/fb          |GET  | auth signin      | | fbtoken
+|/api/auth/fb          |POST  | auth signin      | | fbtoken
 
 List of user route:
 
