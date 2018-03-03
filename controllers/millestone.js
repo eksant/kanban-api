@@ -1,5 +1,6 @@
 const Millestone = require('../models/millestone');
 const Category = require('../models/category');
+const Post = require('../models/post');
 module.exports = {
     find: (req, res, next) => {
         Millestone.find()
@@ -79,7 +80,14 @@ module.exports = {
     destroy: (req, res, next) => {
         Millestone.findByIdAndRemove(req.params.id)
             .then(millestone => {
-                res.json(millestone)
+                Post.remove({
+                    MillestoneId:req.params.id
+                }).then(()=>{
+                    res.json(millestone)
+                })
+                .catch(err => {
+                    next(err)
+                })
             }).catch(err => {
                 next(err)
             })

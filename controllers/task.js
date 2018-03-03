@@ -48,8 +48,6 @@ module.exports = {
             })
             .populate(['UserId'])
             .then(posts=>{
-              console.log(process.env.secretJwtTask);
-        console.log(task);
               res.send({
                 task,
                 categories,
@@ -170,7 +168,28 @@ module.exports = {
   destroy:(req,res,next)=>{
     Task.findByIdAndRemove(req.params.id)
     .then(task=>{
-      res.json(task)
+      Category.remove({
+        TaskId:req.params.id
+      })
+      .then(()=>{
+        Millestone.remove({
+          TaskId:req.params.id
+        })
+        .then(()=>{
+          Post.remove({
+            TaskId:req.params.id
+          })
+          .then(()=>{
+            res.json(task)
+          }).catch(err=>{
+            next(err)
+          })
+        }).catch(err=>{
+          next(err)
+        })
+      }).catch(err=>{
+        next(err)
+      })
     }).catch(err=>{
       next(err)
     })
